@@ -1,0 +1,15 @@
+#board {
+    width: 80vh;
+    height: 80vh;
+    background-color: black;
+    z-index: 1;
+    /*border: 10px solid cyan;*/
+
+}
+
+html,
+body {
+    margin: 0px;
+    padding: 0px;
+    background-color: rgb(255, 255, 255);
+}
