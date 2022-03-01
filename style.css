@@ -1,3 +1,11 @@
+@media screen and (max-width: 768px) {
+    #board {
+        width: 80vw !important;
+        height: 80vw !important;
+        margin: 5vw 10vw 0px 10vw !important;
+    }
+}
+
 #board {
     width: 80vh;
     height: 80vh;
