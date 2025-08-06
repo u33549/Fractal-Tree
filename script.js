@@ -1,36 +1,39 @@
-var canvas = document.getElementById("board");
-var ctx = canvas.getContext("2d");
-ctx.canvas.width = window.innerHeight;
-ctx.canvas.height = window.innerHeight;
-
-function random(min,max){
-  return Math.random()*(max-min)+min
+// Debounce utility to limit how often a function can run
+function debounce(func, wait) {
+    var timeout;
+    return function() {
+        var context = this,
+            args = arguments;
+        clearTimeout(timeout);
+        timeout = setTimeout(function() {
+            func.apply(context, args);
+        }, wait);
+    };
 }
 
-function drawTree(startX, startY, length, angle, branchWidth,hue,sat,light) {
-  ctx.lineWidth = branchWidth;
-  ctx.beginPath();
-  ctx.save();
-  ctx.strokeStyle=`hsl(${random(hue-10,hue+10)},${sat}%,${light}%)`;
-  ctx.fillStyle=`${hue},${sat}%,${light}%)`;
-  ctx.translate(startX, startY);
-  ctx.rotate((angle*Math.PI)/180);
-  ctx.moveTo(0,0);
-  ctx.lineTo(0,-length);
-  ctx.stroke();
-  if(length<10){
-    ctx.restore();
-    return;
-  }
-  drawTree(0,-length,length*0.85,angle-12.5,branchWidth*0.8,(hue+=2),100,(light+=1));
-  drawTree(0,-length,length*0.85,angle+12.5,branchWidth*0.8,(hue+=2),100,(light+=1));
-  ctx.restore();
+// Get the canvas element and set up its properties
+var canvas = document.getElementById('board');
+setCanvasElements(canvas);
+
+// Function to draw the animated tree using current UI parameters
+function drawAnimatedTree() {
+    var ui = setupSlidersAndUI({
+        onParamsChange: debouncedDrawAnimatedTree
+    });
+    animateTree(ui.getParams());
 }
-drawTree(startX=canvas.width/2,
-  startY=canvas.height,
-  length=110,
-  angle=0,
-  branchWidth=25,
-  hue=0,
-  sat=244,
-  light=26)
+
+// Debounced version of drawAnimatedTree for performance
+var debouncedDrawAnimatedTree = debounce(drawAnimatedTree, 50);
+
+// On window load, resize the canvas and draw the tree
+window.onload = function() {
+    resizeCanvas();
+    drawAnimatedTree();
+};
+
+// On window resize, resize the canvas and redraw the tree
+window.addEventListener('resize', function() {
+    resizeCanvas();
+    drawAnimatedTree();
+});
