@@ -1,8 +1,8 @@
-// Dil seçimi ve çeviri sistemi
+// Language selection and translation system
 
-var currentLang = 'tr'; // Varsayılan dil
+var currentLang = 'tr'; // Default language
 
-// LocalStorage'dan dil seçimini yükle
+// Load language selection from localStorage
 function loadLanguage() {
     var savedLang = localStorage.getItem('selectedLanguage');
     if (savedLang && (savedLang === 'tr' || savedLang === 'en' || savedLang === 'fr' || savedLang === 'de' || savedLang === 'ar')) {
@@ -10,9 +10,10 @@ function loadLanguage() {
     }
 }
 
-// Sayfa yüklendiğinde dil seçimini yükle
+// Load language selection on page load
 loadLanguage();
 
+// Translation strings for each language
 var translations = {
     tr: {
         title: 'Ağaç Ayarları',
@@ -91,6 +92,7 @@ var translations = {
     }
 };
 
+// Flag icons for each language
 var flags = {
     tr: '🇹🇷',
     en: '🇬🇧',
@@ -99,6 +101,7 @@ var flags = {
     ar: '🇸🇦'
 };
 
+// Language names for dropdown
 var langNames = {
     tr: 'Türkçe',
     en: 'English',
@@ -107,24 +110,25 @@ var langNames = {
     ar: 'العربية'
 };
 
+// Create the language selector dropdown in the UI
 function createLanguageSelector() {
-    // Dil seçici container
+    // Language selector container
     var langContainer = document.createElement('div');
     langContainer.className = 'fixed top-4 right-4 z-50';
     langContainer.id = 'langSelector';
 
-    // Ana dil butonu
+    // Main language button (shows current flag)
     var langButton = document.createElement('button');
     langButton.className = 'bg-white rounded-full shadow-lg p-2 hover:bg-gray-50 transition-all duration-200';
     langButton.innerHTML = flags[currentLang];
     langButton.id = 'langButton';
 
-    // Dropdown menü
+    // Dropdown menu for language options
     var dropdown = document.createElement('div');
     dropdown.className = 'absolute top-full right-0 mt-2 bg-white rounded-lg shadow-xl border border-gray-200 hidden';
     dropdown.id = 'langDropdown';
 
-    // Dil seçenekleri
+    // Add language options to dropdown
     Object.keys(flags).forEach(function(lang) {
         var langOption = document.createElement('button');
         langOption.className = 'flex items-center w-full px-4 py-2 text-left hover:bg-gray-50 rounded-lg transition-colors duration-150';
@@ -149,12 +153,12 @@ function createLanguageSelector() {
     langContainer.appendChild(dropdown);
     document.body.appendChild(langContainer);
 
-    // Toggle dropdown
+    // Toggle dropdown on button click
     langButton.onclick = function() {
         dropdown.classList.toggle('hidden');
     };
 
-    // Dışarı tıklanınca kapat
+    // Hide dropdown when clicking outside
     document.addEventListener('click', function(e) {
         if (!langContainer.contains(e.target)) {
             dropdown.classList.add('hidden');
@@ -162,30 +166,32 @@ function createLanguageSelector() {
     });
 }
 
+// Change the language and update UI
 function changeLanguage(lang) {
     currentLang = lang;
 
-    // Dil seçimini localStorage'a kaydet
+    // Save language selection to localStorage
     localStorage.setItem('selectedLanguage', lang);
 
-    // Bayrak güncelle
+    // Update flag icon
     document.getElementById('langButton').innerHTML = flags[lang];
 
-    // Dropdown'u kapat
+    // Hide dropdown
     document.getElementById('langDropdown').classList.add('hidden');
 
-    // Çevirileri uygula
+    // Apply translations to UI
     applyTranslations();
 }
 
+// Apply translations to all relevant UI elements
 function applyTranslations() {
     var t = translations[currentLang];
 
-    // Başlık
+    // Update menu title
     var title = document.querySelector('#sideMenu h2');
     if (title) title.textContent = t.title;
 
-    // Label'ları güncelle
+    // Update labels for all controls
     var labels = {
         'mainColorPicker': t.mainColor,
         'lengthSlider': t.length,
@@ -201,10 +207,9 @@ function applyTranslations() {
     Object.keys(labels).forEach(function(id) {
         var element = document.querySelector('label[for="' + id + '"]');
         if (element) {
-            // Label'ın içindeki span'ı koru, sadece text'i güncelle
+            // If label contains a span, only update the text node, keep the span
             var span = element.querySelector('span');
             if (span) {
-                // Sadece label'ın text kısmını değiştir, span'ı koru
                 var labelText = labels[id];
                 element.childNodes.forEach(function(node) {
                     if (node.nodeType === 3) { // Text node
@@ -217,13 +222,13 @@ function applyTranslations() {
         }
     });
 
-    // treeTypeLabel id'li label'ı güncelle
+    // Update label with id 'treeTypeLabel'
     var treeTypeLabel = document.getElementById('treeTypeLabel');
     if (treeTypeLabel) {
         treeTypeLabel.textContent = t.treeType;
     }
 
-    // Ağaç tipi radio buttonları
+    // Update radio button labels for tree type
     var typeLabels = document.querySelectorAll('.flex.space-x-4 label span');
     if (typeLabels.length >= 2) {
         typeLabels[0].textContent = t.straight;
@@ -231,7 +236,7 @@ function applyTranslations() {
     }
 }
 
-// Sayfa yüklendiğinde dil seçiciyi oluştur
+// Create language selector and apply translations on page load
 window.addEventListener('load', function() {
     createLanguageSelector();
     applyTranslations();

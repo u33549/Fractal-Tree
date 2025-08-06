@@ -1,17 +1,20 @@
-// Canvas ve ağaç çizim fonksiyonları
+// Canvas and tree drawing functions
 
 var canvas = null;
 var ctx = null;
 
+// Set the canvas element and its 2D context
 function setCanvasElements(canvasElement) {
     canvas = canvasElement;
     ctx = canvas.getContext("2d");
 }
 
+// Generate a random number between min and max
 function random(min, max) {
     return Math.random() * (max - min) + min;
 }
 
+// Recursive function to draw the fractal tree
 function drawTree(
     startX,
     startY,
@@ -31,6 +34,7 @@ function drawTree(
         return;
     }
 
+    // Clamp multipliers to minimum values for stability
     lengthMultiplier = Math.max(0.7, lengthMultiplier);
     angleMultiplier = Math.max(0.5, angleMultiplier);
     branchWidthMultiplier = Math.max(0.5, branchWidthMultiplier);
@@ -43,6 +47,7 @@ function drawTree(
     ctx.rotate((angle * Math.PI) / 180);
     ctx.moveTo(0, 0);
 
+    // Draw either a straight or curved branch
     if (type === "d") {
         ctx.lineTo(0, -length);
     } else {
@@ -50,11 +55,13 @@ function drawTree(
     }
     ctx.stroke();
 
+    // Stop recursion if the branch is too short
     if (length < 10) {
         ctx.restore();
         return;
     }
 
+    // Recursively draw left and right branches
     drawTree(
         0, -length,
         length * lengthMultiplier,
@@ -89,6 +96,7 @@ function drawTree(
 
 var animationId = 0;
 
+// Animate the tree drawing process by depth
 function animateTree(params) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     var {
@@ -112,6 +120,7 @@ function animateTree(params) {
     var startTime = null;
     var stepTime = duration / maxDepth;
 
+    // Draw the tree up to a certain depth
     function drawDepth(targetDepth) {
         function drawBranch(x, y, len, ang, bw, hue, sat, light, depth) {
             if (depth > targetDepth || depth <= 0) return;
@@ -139,6 +148,7 @@ function animateTree(params) {
         drawBranch(startX, startY, length, angle, branchWidth, baseHue, baseSat, baseLight, targetDepth);
     }
 
+    // Animation step function, increases depth over time
     function animateStep(timestamp) {
         if (animationIdLocal !== animationId) return;
         if (!startTime) startTime = timestamp;
@@ -153,6 +163,7 @@ function animateTree(params) {
     requestAnimationFrame(animateStep);
 }
 
+// Resize the canvas to fit the window
 function resizeCanvas() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
