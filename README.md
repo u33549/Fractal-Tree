@@ -1,5 +1,9 @@
 >Scroll for English
 
+## Performans ve Kurtarma Uyarısı ⚠️
+
+Bazı parametreleri (özellikle derinlik, uzunluk veya çarpanlar) aşırı yüksek değerlere ayarladığınızda, uygulamanın yüklenmesi yavaşlayabilir veya tarayıcı yanıt vermeyebilir. Ancak uygulamada bulunan çökme koruması sayesinde, sayfa yeniden yüklendiğinde veya uygulama farklı bir sekmede açıldığında ayarlarınız korunur ve uygulama tekrar çalışır. Eğer uygulama yanıt vermezse, sayfayı yenileyerek veya yeni bir sekmede açarak kolayca devam edebilirsiniz.
+
 # Fraktal Ağaç Görselleştirici 🌳
 
 Uygulamaya erişmek için [buraya tıklayın](https://u33549.github.io/Fractal-Tree/) veya `index.html` dosyasını bir tarayıcıda açabilirsiniz.
@@ -23,6 +27,17 @@ Fraktal ağaçlar, doğadaki ağaçların dallanma yapısını matematiksel olar
 
 ---
 
+## Nasıl Kullanılır? 🚀
+
+1. **Uygulamayı Açın:** [Fraktal Ağaç Görselleştirici](https://u33549.github.io/Fractal-Tree/) adresine gidin veya `index.html` dosyasını bir web tarayıcısında açın.
+2. **Ayarları Değiştirin:** Sol menüyü açarak renk, uzunluk, açı, derinlik ve diğer parametreleri değiştirin.
+3. **Ağaç Tipini Seçin:** Düz veya eğri dallı ağaç tiplerinden birini seçin.
+4. **Animasyon Süresini Ayarlayın:** Ağacın çizilme hızını belirleyin.
+5. **Sıfırlama:** Her parametrenin yanındaki sıfırla butonunu veya menüdeki "Reset All Settings" butonunu kullanarak ayarları varsayılana döndürebilirsiniz.
+6. **Dil Değiştirin:** Sağ üstteki bayrak simgesine tıklayarak arayüz dilini anında değiştirebilirsiniz.
+
+---
+
 ## Parametreler ve Açıklamaları 🌱
 
 Aşağıdaki tüm parametreler sol menüden değiştirilebilir:
@@ -33,23 +48,12 @@ Aşağıdaki tüm parametreler sol menüden değiştirilebilir:
 - **Dal Genişliği (Branch Width):** Gövde ve dalların kalınlığını ayarlar.
 - **Derinlik (Depth):** Ağacın kaç defa dallanacağını (yani kaç seviye fraktal oluşturulacağını) belirler. Daha yüksek değerler daha karmaşık ağaçlar üretir.
 - **Ağaç Tipi (Tree Type):** Düz (Straight) veya eğri (Curved) dallı ağaçlar arasında seçim yapabilirsiniz.
-- **Uzunluk Çarpanı (Length Multiplier):** Her yeni dalın bir önceki dala göre ne kadar kısa olacağını belirler (ör. 0.8 değeri, her dalın bir öncekinden %80 uzun olacağı anlamına gelir).
+- **Uzunluk Çarpanı (Length Multiplier):** Her yeni dalın bir önceki dala göre ne kadar kısa olacağını belirler (ör. 0.8 değeri, her dalın bir öncekinden 0.8 katı kadar uzun olacağı anlamına gelir).
 - **Açı Çarpanı (Angle Multiplier):** Dalların ayrılma açısının her seviyede nasıl değişeceğini belirler.
 - **Dal Genişliği Çarpanı (Branch Width Multiplier):** Her yeni dalın kalınlığının bir önceki dala göre ne kadar azalacağını ayarlar.
 - **Animasyon Süresi (Animation Duration):** Ağacın çizilme hızını milisaniye cinsinden belirler.
 
 Her parametrenin yanında bir sıfırlama butonu bulunur. Ayrıca menüdeki "Reset All Settings" butonuyla tüm ayarları varsayılana döndürebilirsiniz.
-
----
-
-## Nasıl Kullanılır? 🚀
-
-1. **Uygulamayı Açın:** [Fraktal Ağaç Görselleştirici](https://u33549.github.io/Fractal-Tree/) adresine gidin veya `index.html` dosyasını bir web tarayıcısında açın.
-2. **Ayarları Değiştirin:** Sol menüyü açarak renk, uzunluk, açı, derinlik ve diğer parametreleri değiştirin.
-3. **Ağaç Tipini Seçin:** Düz veya eğri dallı ağaç tiplerinden birini seçin.
-4. **Animasyon Süresini Ayarlayın:** Ağacın çizilme hızını belirleyin.
-5. **Sıfırlama:** Her parametrenin yanındaki sıfırla butonunu veya menüdeki "Reset All Settings" butonunu kullanarak ayarları varsayılana döndürebilirsiniz.
-6. **Dil Değiştirin:** Sağ üstteki bayrak simgesine tıklayarak arayüz dilini anında değiştirebilirsiniz.
 
 ---
 
@@ -77,6 +81,10 @@ Her parametrenin yanında bir sıfırlama butonu bulunur. Ayrıca menüdeki "Res
 
 ---
 
+## Performance & Recovery Notice ⚠️
+
+If you set some parameters (especially depth, length, or multipliers) to extremely high values, the app may slow down or your browser may become unresponsive due to heavy calculations. However, thanks to the built-in crash protection, your settings are preserved and the app will work again when you reload the page or open it in a new tab. If the app becomes unresponsive, simply refresh the page or open it in another tab to continue.
+
 # Fractal Tree Visualizer 🌳
 
 You can access the app [here](https://u33549.github.io/Fractal-Tree/) or by opening the `index.html` file in your browser.
@@ -100,6 +108,17 @@ A fractal tree is a mathematical structure that models the branching patterns of
 
 ---
 
+## How to Use? 🚀
+
+1. **Open the App:** Go to [Fractal Tree Visualizer](https://u33549.github.io/Fractal-Tree/) or open `index.html` in your web browser.
+2. **Adjust Settings:** Use the side menu to change color, length, angle, depth, and other parameters.
+3. **Select Tree Type:** Choose between straight or curved branches.
+4. **Set Animation Duration:** Control how fast the tree is drawn.
+5. **Reset:** Use the reset button next to each parameter or the "Reset All Settings" button to restore defaults.
+6. **Change Language:** Click the flag icon in the top-right corner to instantly change the interface language.
+
+---
+
 ## Parameters Explained 🌱
 
 All parameters can be adjusted from the side menu:
@@ -116,17 +135,6 @@ All parameters can be adjusted from the side menu:
 - **Animation Duration:** Sets how fast the tree is drawn, in milliseconds.
 
 Each parameter has a reset button next to it. You can also use the "Reset All Settings" button in the menu to restore all defaults.
-
----
-
-## How to Use? 🚀
-
-1. **Open the App:** Go to [Fractal Tree Visualizer](https://u33549.github.io/Fractal-Tree/) or open `index.html` in your web browser.
-2. **Adjust Settings:** Use the side menu to change color, length, angle, depth, and other parameters.
-3. **Select Tree Type:** Choose between straight or curved branches.
-4. **Set Animation Duration:** Control how fast the tree is drawn.
-5. **Reset:** Use the reset button next to each parameter or the "Reset All Settings" button to restore defaults.
-6. **Change Language:** Click the flag icon in the top-right corner to instantly change the interface language.
 
 ---
 
@@ -151,3 +159,5 @@ Each parameter has a reset button next to it. You can also use the "Reset All Se
 1. Click the flag icon in the top-right corner.
 2. Select your preferred language from the dropdown.
 3. Your choice is saved and the interface updates instantly.
+
+---

@@ -29,7 +29,9 @@ var debouncedDrawAnimatedTree = debounce(drawAnimatedTree, 50);
 // On window load, resize the canvas and draw the tree
 window.onload = function() {
     resizeCanvas();
+    loadSettings();
     drawAnimatedTree();
+
 };
 
 // On window resize, resize the canvas and redraw the tree

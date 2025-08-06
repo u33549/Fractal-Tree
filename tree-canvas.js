@@ -120,6 +120,9 @@ function animateTree(params) {
     var startTime = null;
     var stepTime = duration / maxDepth;
 
+    // Mark tree as not completed at the start of animation
+    localStorage.setItem("treeCompleted", "false");
+
     // Draw the tree up to a certain depth
     function drawDepth(targetDepth) {
         function drawBranch(x, y, len, ang, bw, hue, sat, light, depth) {
@@ -158,6 +161,9 @@ function animateTree(params) {
         drawDepth(targetDepth);
         if (targetDepth < maxDepth) {
             requestAnimationFrame(animateStep);
+        } else {
+            // Mark tree as completed in localStorage
+            localStorage.setItem("treeCompleted", "true");
         }
     }
     requestAnimationFrame(animateStep);
