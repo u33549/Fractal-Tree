@@ -344,7 +344,7 @@ function calculateStartPosition() {
     let startY;
     
     if (window.innerWidth > 1400) {
-        startY = window.innerHeight * 0.67;
+        startY = window.innerHeight * 0.70;
     } else {
         if (window.innerHeight > 899) {
             startY = window.innerHeight * 0.76;
