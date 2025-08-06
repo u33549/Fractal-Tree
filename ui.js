@@ -1,9 +1,7 @@
-// UI ile ilgili kodlar
+// UI related code
 
 function hexToHsl(hex) {
-    let r = 0,
-        g = 0,
-        b = 0;
+    let r = 0, g = 0, b = 0;
     if (hex.length === 4) {
         r = parseInt(hex[1] + hex[1], 16);
         g = parseInt(hex[2] + hex[2], 16);
@@ -40,11 +38,26 @@ function hexToHsl(hex) {
     return [h * 360, s * 100, l * 100];
 }
 
+// Centralized default settings
+const DEFAULT_SETTINGS = {
+    mainColor: '#850005',
+    length: 100,
+    angle: 0,
+    branchWidth: 10,
+    depth: 12,
+    treeType: 'd',
+    lengthMultiplier: 0.8,
+    angleMultiplier: 0.8,
+    branchWidthMultiplier: 0.9,
+    animationDuration: 1000
+};
+
 function setupSlidersAndUI(options) {
     var onParamsChange = options.onParamsChange;
     var onMenuOpen = options.onMenuOpen;
     var onMenuClose = options.onMenuClose;
-    // Tüm UI elementlerini al
+
+    // Get all UI elements
     var mainColorPicker = document.getElementById("mainColorPicker");
     var lengthSlider = document.getElementById("lengthSlider");
     var lengthValue = document.getElementById("lengthValue");
@@ -68,30 +81,47 @@ function setupSlidersAndUI(options) {
     var menuToggleButton = document.getElementById("menuToggleButton");
     var closeMenuButton = document.getElementById("closeMenuButton");
 
+    // Update slider value display
     function updateSliderValue(slider, valueSpan) {
-        valueSpan.textContent = slider.value;
+        if (valueSpan) {
+            valueSpan.textContent = slider.value;
+        }
     }
 
+    // Add input listeners to sliders for instant value update and saving
     [lengthSlider, angleSlider, branchWidthSlider, depthSlider,
         lengthMultiplierSlider, angleMultiplierSlider, branchWidthMultiplierSlider
     ].forEach(function(slider) {
         var span = document.getElementById(slider.id.replace("Slider", "Value"));
         slider.addEventListener("input", function() {
-            updateSliderValue(slider, span); // Değer anında güncellensin
-            onParamsChange(); // Debounced fonksiyon gelmeli
+            updateSliderValue(slider, span);
+            saveSettings();
+            onParamsChange();
         });
     });
 
-    mainColorPicker.addEventListener("input", onParamsChange);
-    animationDurationSlider.addEventListener("input", function() {
-        animationDurationValue.textContent = animationDurationSlider.value;
+    // Color picker event
+    mainColorPicker.addEventListener("input", function() {
+        saveSettings();
         onParamsChange();
     });
-    [typeStraightRadio, typeCurvedRadio].forEach(function(r) {
-        r.addEventListener("change", onParamsChange);
+
+    // Animation duration slider event
+    animationDurationSlider.addEventListener("input", function() {
+        animationDurationValue.textContent = animationDurationSlider.value;
+        saveSettings();
+        onParamsChange();
     });
 
-    // Menü açma/kapama
+    // Tree type radio buttons event
+    [typeStraightRadio, typeCurvedRadio].forEach(function(r) {
+        r.addEventListener("change", function() {
+            saveSettings();
+            onParamsChange();
+        });
+    });
+
+    // Menu open/close logic
     function openMenu() {
         sideMenu.classList.remove("-translate-x-full");
         menuToggleButton.classList.add("hidden");
@@ -113,7 +143,7 @@ function setupSlidersAndUI(options) {
         }
     });
 
-    // Başlangıçta değerleri güncelle
+    // Initialize slider values on load
     updateSliderValue(lengthSlider, lengthValue);
     updateSliderValue(angleSlider, angleValue);
     updateSliderValue(branchWidthSlider, branchWidthValue);
@@ -123,10 +153,179 @@ function setupSlidersAndUI(options) {
     updateSliderValue(branchWidthMultiplierSlider, branchWidthMultiplierValue);
     animationDurationValue.textContent = animationDurationSlider.value;
 
-    // Parametreleri döndür
+    // Save settings to localStorage
+    function saveSettings() {
+        var settings = {
+            mainColor: mainColorPicker.value,
+            length: lengthSlider.value,
+            angle: angleSlider.value,
+            branchWidth: branchWidthSlider.value,
+            depth: depthSlider.value,
+            treeType: typeStraightRadio.checked ? 'd' : 'c',
+            lengthMultiplier: lengthMultiplierSlider.value,
+            angleMultiplier: angleMultiplierSlider.value,
+            branchWidthMultiplier: branchWidthMultiplierSlider.value,
+            animationDuration: animationDurationSlider.value
+        };
+        localStorage.setItem('treeSettings', JSON.stringify(settings));
+    }
+
+    // Load settings from localStorage or use defaults
+    function loadSettings() {
+        var savedSettings = localStorage.getItem('treeSettings');
+        if (savedSettings) {
+            var settings = JSON.parse(savedSettings);
+
+            mainColorPicker.value = settings.mainColor || DEFAULT_SETTINGS.mainColor;
+            lengthSlider.value = settings.length || DEFAULT_SETTINGS.length;
+            angleSlider.value = settings.angle || DEFAULT_SETTINGS.angle;
+            branchWidthSlider.value = settings.branchWidth || DEFAULT_SETTINGS.branchWidth;
+            depthSlider.value = settings.depth || DEFAULT_SETTINGS.depth;
+
+            if (settings.treeType === 'c') {
+                typeCurvedRadio.checked = true;
+            } else {
+                typeStraightRadio.checked = true;
+            }
+
+            lengthMultiplierSlider.value = settings.lengthMultiplier || DEFAULT_SETTINGS.lengthMultiplier;
+            angleMultiplierSlider.value = settings.angleMultiplier || DEFAULT_SETTINGS.angleMultiplier;
+            branchWidthMultiplierSlider.value = settings.branchWidthMultiplier || DEFAULT_SETTINGS.branchWidthMultiplier;
+            animationDurationSlider.value = settings.animationDuration || DEFAULT_SETTINGS.animationDuration;
+
+            // Update value displays
+            updateSliderValue(lengthSlider, lengthValue);
+            updateSliderValue(angleSlider, angleValue);
+            updateSliderValue(branchWidthSlider, branchWidthValue);
+            updateSliderValue(depthSlider, depthValue);
+            updateSliderValue(lengthMultiplierSlider, lengthMultiplierValue);
+            updateSliderValue(angleMultiplierSlider, angleMultiplierValue);
+            updateSliderValue(branchWidthMultiplierSlider, branchWidthMultiplierValue);
+            animationDurationValue.textContent = animationDurationSlider.value;
+        }
+    }
+
+    // Load settings on page load
+    loadSettings();
+
+    // Add event listeners to reset buttons
+    var resetButtons = document.querySelectorAll('.reset-btn');
+    resetButtons.forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            var resetType = this.getAttribute('data-reset');
+            resetSingleSetting(resetType);
+        });
+    });
+
+    // General reset button event
+    var resetAllBtn = document.getElementById('resetAllBtn');
+    if (resetAllBtn) {
+        resetAllBtn.addEventListener('click', resetAllSettings);
+    }
+
+    // Reset a single setting to default
+    function resetSingleSetting(settingType) {
+        switch (settingType) {
+            case 'mainColorPicker':
+                mainColorPicker.value = DEFAULT_SETTINGS.mainColor;
+                break;
+            case 'lengthSlider':
+                lengthSlider.value = DEFAULT_SETTINGS.length;
+                updateSliderValue(lengthSlider, lengthValue);
+                break;
+            case 'angleSlider':
+                angleSlider.value = DEFAULT_SETTINGS.angle;
+                updateSliderValue(angleSlider, angleValue);
+                break;
+            case 'branchWidthSlider':
+                branchWidthSlider.value = DEFAULT_SETTINGS.branchWidth;
+                updateSliderValue(branchWidthSlider, branchWidthValue);
+                break;
+            case 'depthSlider':
+                depthSlider.value = DEFAULT_SETTINGS.depth;
+                updateSliderValue(depthSlider, depthValue);
+                break;
+            case 'treeType':
+                typeStraightRadio.checked = (DEFAULT_SETTINGS.treeType === 'd');
+                typeCurvedRadio.checked = (DEFAULT_SETTINGS.treeType === 'c');
+                break;
+            case 'lengthMultiplierSlider':
+                lengthMultiplierSlider.value = DEFAULT_SETTINGS.lengthMultiplier;
+                updateSliderValue(lengthMultiplierSlider, lengthMultiplierValue);
+                break;
+            case 'angleMultiplierSlider':
+                angleMultiplierSlider.value = DEFAULT_SETTINGS.angleMultiplier;
+                updateSliderValue(angleMultiplierSlider, angleMultiplierValue);
+                break;
+            case 'branchWidthMultiplierSlider':
+                branchWidthMultiplierSlider.value = DEFAULT_SETTINGS.branchWidthMultiplier;
+                updateSliderValue(branchWidthMultiplierSlider, branchWidthMultiplierValue);
+                break;
+            case 'animationDurationSlider':
+                animationDurationSlider.value = DEFAULT_SETTINGS.animationDuration;
+                animationDurationValue.textContent = animationDurationSlider.value;
+                break;
+        }
+        saveSettings();
+        onParamsChange();
+    }
+
+    // Reset all settings to default
+    function resetAllSettings() {
+        mainColorPicker.value = DEFAULT_SETTINGS.mainColor;
+
+        lengthSlider.value = DEFAULT_SETTINGS.length;
+        updateSliderValue(lengthSlider, lengthValue);
+
+        angleSlider.value = DEFAULT_SETTINGS.angle;
+        updateSliderValue(angleSlider, angleValue);
+
+        branchWidthSlider.value = DEFAULT_SETTINGS.branchWidth;
+        updateSliderValue(branchWidthSlider, branchWidthValue);
+
+        depthSlider.value = DEFAULT_SETTINGS.depth;
+        updateSliderValue(depthSlider, depthValue);
+
+        typeStraightRadio.checked = (DEFAULT_SETTINGS.treeType === 'd');
+        typeCurvedRadio.checked = (DEFAULT_SETTINGS.treeType === 'c');
+
+        lengthMultiplierSlider.value = DEFAULT_SETTINGS.lengthMultiplier;
+        updateSliderValue(lengthMultiplierSlider, lengthMultiplierValue);
+
+        angleMultiplierSlider.value = DEFAULT_SETTINGS.angleMultiplier;
+        updateSliderValue(angleMultiplierSlider, angleMultiplierValue);
+
+        branchWidthMultiplierSlider.value = DEFAULT_SETTINGS.branchWidthMultiplier;
+        updateSliderValue(branchWidthMultiplierSlider, branchWidthMultiplierValue);
+
+        animationDurationSlider.value = DEFAULT_SETTINGS.animationDuration;
+        animationDurationValue.textContent = animationDurationSlider.value;
+
+        saveSettings();
+        onParamsChange();
+    }
+
+    // Return parameters for drawing
     function getParams() {
         var startX = window.innerWidth / 2;
-        var startY = window.innerHeight;
+        var startY;
+        if (window.innerWidth > 1400) {
+            startY = window.innerHeight * 0.67;
+        } else {
+            if (window.innerHeight > 899) {
+                startY = window.innerHeight * 0.76;
+            } else if (window.innerHeight < 900 && window.innerHeight > 800) {
+                startY = window.innerHeight * 0.73;
+            } else if (window.innerHeight < 801 && window.innerHeight > 680) {
+                startY = window.innerHeight * 0.70;
+            } else if (window.innerHeight < 681 && window.innerHeight > 600) {
+                startY = window.innerHeight * 0.67;
+            } else if (window.innerHeight < 601 && window.innerHeight > 540) {
+                startY = window.innerHeight * 0.64;
+            } else {
+                startY = window.innerHeight * 0.6;
+            }
+        }
         var length = parseFloat(lengthSlider.value);
         var angle = parseFloat(angleSlider.value);
         var branchWidth = parseFloat(branchWidthSlider.value);

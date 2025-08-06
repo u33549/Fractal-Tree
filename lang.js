@@ -1,6 +1,18 @@
 // Dil seçimi ve çeviri sistemi
 
 var currentLang = 'tr'; // Varsayılan dil
+
+// LocalStorage'dan dil seçimini yükle
+function loadLanguage() {
+    var savedLang = localStorage.getItem('selectedLanguage');
+    if (savedLang && (savedLang === 'tr' || savedLang === 'en' || savedLang === 'fr' || savedLang === 'de' || savedLang === 'ar')) {
+        currentLang = savedLang;
+    }
+}
+
+// Sayfa yüklendiğinde dil seçimini yükle
+loadLanguage();
+
 var translations = {
     tr: {
         title: 'Ağaç Ayarları',
@@ -153,6 +165,9 @@ function createLanguageSelector() {
 function changeLanguage(lang) {
     currentLang = lang;
 
+    // Dil seçimini localStorage'a kaydet
+    localStorage.setItem('selectedLanguage', lang);
+
     // Bayrak güncelle
     document.getElementById('langButton').innerHTML = flags[lang];
 
@@ -180,7 +195,7 @@ function applyTranslations() {
         'lengthMultiplierSlider': t.lengthMultiplier,
         'angleMultiplierSlider': t.angleMultiplier,
         'branchWidthMultiplierSlider': t.branchWidthMultiplier,
-        'animationDurationSlider': t.animationDuration
+        'animationDurationSlider': t.animationDuration,
     };
 
     Object.keys(labels).forEach(function(id) {
@@ -189,15 +204,27 @@ function applyTranslations() {
             // Label'ın içindeki span'ı koru, sadece text'i güncelle
             var span = element.querySelector('span');
             if (span) {
-                element.innerHTML = labels[id] + ' <span class="font-semibold text-blue-600">' + span.textContent + '</span>';
+                // Sadece label'ın text kısmını değiştir, span'ı koru
+                var labelText = labels[id];
+                element.childNodes.forEach(function(node) {
+                    if (node.nodeType === 3) { // Text node
+                        node.textContent = labelText;
+                    }
+                });
             } else {
                 element.textContent = labels[id];
             }
         }
     });
 
+    // treeTypeLabel id'li label'ı güncelle
+    var treeTypeLabel = document.getElementById('treeTypeLabel');
+    if (treeTypeLabel) {
+        treeTypeLabel.textContent = t.treeType;
+    }
+
     // Ağaç tipi radio buttonları
-    var typeLabels = document.querySelectorAll('input[name="treeType"] + label');
+    var typeLabels = document.querySelectorAll('.flex.space-x-4 label span');
     if (typeLabels.length >= 2) {
         typeLabels[0].textContent = t.straight;
         typeLabels[1].textContent = t.curved;
